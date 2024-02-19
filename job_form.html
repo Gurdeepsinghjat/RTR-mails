@@ -1,0 +1,28 @@
+<!-- job_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="job_form.css">
+    <title>Create Job</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Job</h1>
+
+        <form action="process_job.php" method="post">
+            <!-- Add your form fields here -->
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" required>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <!-- Add more fields as needed -->
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

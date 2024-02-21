@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles1.css">
+    <title>Right to Represent Confirmation</title>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ... Other HTML content ... -->
+
+        <!-- Bold Text -->
+        <p class="bold-text">Dear <span class="s1" id="employerName"></span>,</p>
+
+        <p>I hope this email finds you well. I kindly request your confirmation on the Right to Represent (RTR) for, <span class="bold-text" id="candidateName"></span>.</p>
+
+        <p>With my explicit permission, I hereby authorize you to present <span class="S2" id="s2"></span> resume and credentials for the role of <span class="bold-text" id="role"></span> at <span class="bold-text" id="client"></span>. The details for the RTR are as follows:</p>
+
+        <!-- Bold and Yellow -->
+        <div class="rtr-details">
+            <p><span class="bold-yellow" id="rtrDetails"></span></p>
+            <p><span class="bold-yellow"> Rate Confirmation: </span></p>
+            <p id="rateConfirmation"></p>
+        </div>
+
+        <!-- Red Text -->
+        <div class="relocation-travel">
+            <p><strong>Relocation and Travel:</strong></p>
+            <div class="red-text">
+                <p>If remote is selected then As the role is remote, the candidate does not need to relocate. However, you will confirm that <span class="candidate-name" id="candidateNameRed"></span> is willing to travel to the client's location if needed, for tasks like procuring equipment.</p>
+
+                <p>You acknowledge that <span class="candidate-name" id="candidateNameRelocation"></span> is willing to relocate or travel to the job location in <span class="location" id="location"></span> as required.</p>
+            </div>
+        </div>
+
+        <!-- Bold and Italic Text -->
+        <div class="italic-bold-text">
+            <p><strong><em>Please provide the submission details</em></strong></p>
+            <div class="two-columns">
+                <div class="right-column">
+                    <table>
+                        <!-- ... Table rows for submission details ... -->
+                    </table>
+                </div> <!-- Right column (table) -->
+            </div>
+        </div>
+
+        <!-- Bold and Italic Text -->
+        <div class="italic-bold-text">
+            <p><strong><em>Two Professional References</em></strong></p>
+
+            <!-- Reference One -->
+            <div class="reference-table" id="referenceOne">
+                <!-- ... Reference One content ... -->
+            </div>
+
+            <!-- Reference Two -->
+            <div class="reference-table" id="referenceTwo">
+                <!-- ... Reference Two content ... -->
+            </div>
+        </div>
+
+        <!-- Bold Text -->
+        <p class="bold-text"><strong>Skills matrix</strong></p>
+        <p class="bold-text" id="skillsMatrix"></p>
+
+        <!-- Bold and Italic Text -->
+        <div class="italic-bold-text">
+            <p><strong><em>Job Description</em></strong></p>
+            <ul>
+                <li>Role: <span class="role" id="jobRole"></span></li>
+                <li>Location: <span class="location" id="jobLocation"></span></li>
+                <li>Client: <span class="client" id="jobClient"></span></li>
+                <li>IP: <span class="ip" id="jobIP"></span></li>
+                <li>Duration: <span class="duration" id="jobDuration"></span></li>
+            </ul>
+
+            <p><strong><em>Roles and Responsibilities</em></strong></p>
+            <p id="jobRolesResponsibilities"></p>
+        </div>
+
+        <!-- Signature -->
+        <p class="signature">
+            Gurdeep S. Jat<br>
+            Sr. Us It Recruiter<br>
+            USM SYSTEMS | 44320 Premier Plaza, Suite 210, Ashburn VA 20147.<br>
+            703-546-4788<br>
+            GurudeepJ@usmsystems.com<br>
+            <a href="http://www.usmsystems.com">www.usmsystems.com</a>
+        </p>
+
+        <!-- Navigation Buttons -->
+        <div>
+            <button onclick="previousEntry()">Previous</button>
+            <button onclick="nextEntry()">Next</button>
+        </div>
+
+        <script>
+            let currentEntryIndex = 1; // Starting index
+
+            // Function to fetch data from the Google Sheet
+            function fetchData(index) {
+                const sheetUrl = 'https://docs.google.com/spreadsheets/d/1poiW8BG5Fij_rzPZ3zSzA7S86Vj5ECPF/export?format=csv&id=1poiW8BG5Fij_rzPZ3zSzA7S86Vj5ECPF&gid=0';
+                fetch(sheetUrl)
+                    .then(response => response.text())
+                    .then(data => {
+                        const parser = new DOMParser();
+                        const htmlDoc = parser.parseFromString(data, 'text/html');
+
+                        // Update HTML elements with fetched data
+                        document.getElementById('employerName').innerText = getCellValue(htmlDoc, index, 'A');
+                        document.getElementById('candidateName').innerText = getCellValue(htmlDoc, index, 'B');
+                        document.getElementById('s2').innerText = getCellValue(htmlDoc, index, 'C');
+                        document.getElementById('role').innerText = getCellValue(htmlDoc, index, 'D');
+                        document.getElementById('client').innerText = getCellValue(htmlDoc, index, 'E');
+                        document.getElementById('rtrDetails').innerText = getCellValue(htmlDoc, index, 'F');
+                        document.getElementById('rateConfirmation').innerText = getCellValue(htmlDoc, index, 'G');
+                        document.getElementById('candidateNameRed').innerText = getCellValue(htmlDoc, index, 'B');
+                        document.getElementById('candidateNameRelocation').innerText = getCellValue(htmlDoc, index, 'B');
+                        document.getElementById('location').innerText = getCellValue(htmlDoc, index, 'H');
+                        // Update other elements...
+
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+
+            // Function to get cell value from the HTML document
+            function getCellValue(htmlDoc, row, col) {
+                const cell = htmlDoc.querySelector(`[data-row-col="${row}-${col}"]`);
+                return cell ? cell.innerText : '';
+            }
+
+            // Load data for the current entry index
+            fetchData(currentEntryIndex);
+
+            // Function to handle navigation to the next entry
+            function nextEntry() {
+                currentEntryIndex++;
+                fetchData(currentEntryIndex);
+            }
+
+            // Function to handle navigation to the previous entry
+            function previousEntry() {
+                if (currentEntryIndex > 1) {
+                    currentEntryIndex--;
+                    fetchData(currentEntryIndex);
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
